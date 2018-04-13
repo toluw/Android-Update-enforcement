@@ -1,0 +1,77 @@
+public class MainActivity extends AppCompatActivity{
+
+// URL of PHP file
+String vrl = "http://192.168.2.50/version.php";
+int versionCode;
+
+  @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+// Gets the version code of the current release 
+try {
+                PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                versionCode = packageInfo.versionCode;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            
+  getVersion();
+}
+ 
+ 
+ // Gets the version code of the new release stored in a remote server, Enforces update if the present version code is less than the version code of the new release
+ public void getVersion (){
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                StringRequest request = new StringRequest(Request.Method.GET, vrl, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.has("response")){
+                                int num = jsonObject.getInt("response");
+                               if (versionCode < num){
+                               
+                              // Enforces update by starting a new activity containing the update link
+                                   Intent ty = new Intent(getApplicationContext(),Version.class);
+                                   startActivity(ty);
+                               }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        String message = null;
+                        if (error instanceof ServerError) {
+                            message = "The server could not be found. Please try again after some time!!";
+                        } else if (error instanceof AuthFailureError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                        } else if (error instanceof ParseError) {
+                            message = "Parsing error! Please try again after some time!!";
+                        } else if (error instanceof TimeoutError) {
+                            message = "Connection TimeOut! Please check your internet connection.";
+                        }
+
+
+                    }
+                });
+                requestQueue.add(request);
+
+
+            }
+        };
+        Thread myThread = new Thread(r);
+        myThread.start();
+
+    }
+
+}
