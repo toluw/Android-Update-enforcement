@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/search"
+    tools:context="com.example.tolu.qa.Version">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginTop="80dp">
+
+ <TextView
+     android:id="@+id/t1"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_marginTop="40dp"
+     android:layout_marginLeft="5dp"
+     android:textSize="20sp"
+     android:textColor="@color/black"
+     android:text="You do not have the latest version of Q and A app"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/t1"
+        android:layout_centerHorizontal="true"
+        android:text="UPDATE TO LATEST VERSION"
+        android:onClick="update"
+        android:layout_marginBottom="20dp"/>
+
+    </RelativeLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
